@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Plataforma do Estudante</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        color-scheme: light dark;
+        --primary: #005fa3;
+        --secondary: #004a80;
+        --bg-light: #f4f6f9;
+        --bg-dark: #223a2c;
+        --text-light: #333b3c;
+        --text-dark: #b4b3b3;
+      }
+
+      body {
+        font-family: "Segoe UI", sans-serif;
+        background-color: light-dark(var(--bg-light), var(--bg-dark));
+        color: light-dark(var(--text-light), var(--text-dark));
+        display: flex;
+        min-height: 100vh;
+        padding-top: 50px;
+      }
+      .topinfobar {
+        width: 100%;
+        background-color: var(--primary);
+        color: white;
+        padding: 16px 20px;
+        font-weight: bold;
+        font-size: 15px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .menu-toggle {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+
+      #menu-checkbox {
+        display: none;
+      }
+      .sidebar {
+        width: 250px;
+        background: var(--primary);
+        color: white;
+        height: 100vh;
+        padding: 20px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        z-index: 999;
+        overflow-y: auto;
+        scrollbar-width: none;
+      }
+
+      #menu-checkbox:checked ~ .sidebar {
+        transform: translateX(0);
+      }
+
+      .menu-list,
+      .submenu,
+      .submenusercicos {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .menu-list li,
+      .submenu li,
+      .submenusercicos li {
+        margin-bottom: 10px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        padding-bottom: 5px;
+      }
+
+      .menu-item,
+      .submenu-item,
+      details summary {
+        display: block;
+        padding: 10px;
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 16px;
+        line-height: 1.6;
+        transition: background-color 0.3s ease;
+        border-radius: 4px;
+      }
+
+      .menu-item:hover,
+      .submenu-item:hover,
+      details summary:hover {
+        background-color: var(--secondary);
+        border-radius: 4px;
+      }
+
+      .submenu {
+        padding-left: 20px;
+      }
+      .topbar__user {
+        position: relative;
+        display: inline-block;
+      }
+
+      .user-menu {
+        position: relative;
+        display: inline-block;
+      }
+
+      .user-trigger {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        padding: 8px;
+        background: var(--secondary);
+        color: white;
+        border-radius: 6px;
+        transition: background 0.3s ease;
+      }
+
+      .user-trigger:hover {
+        background: #003a66;
+      }
+
+      .avatar-img {
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        margin-right: 8px;
+      }
+
+      .user-dropdown {
+        background: var(--primary);
+        color: white;
+        padding: 15px;
+        border-radius: 8px;
+        margin-top: 5px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        min-width: 250px;
+      }
+
+      .user-course,
+      .user-email {
+        margin-bottom: 10px;
+        font-size: 14px;
+      }
+
+      .user-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .dropdown-item {
+        display: flex;
+        align-items: center;
+        padding: 8px;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        transition: background 0.3s ease;
+      }
+
+      .dropdown-item:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .logout {
+        color: #ffcccc;
+      }
+
+      .icon {
+        margin-right: 8px;
+        font-size: 18px;
+      }
+
+      .version {
+        display: block;
+        margin-top: 10px;
+        font-size: 12px;
+        opacity: 0.7;
+      }
+      main {
+        padding: 20px;
+        width: 100%;
+      }
+
+      .dashboard h1 {
+        color: #003366;
+        margin-bottom: 10px;
+      }
+
+      .painel {
+        background-color: white;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+      }
+
+      .tabela-container {
+        max-height: 300px;
+        overflow-y: auto;
+        scrollbar-width: none;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: light-dark(#efedea, black);
+      }
+
+      thead {
+        color: light-dark(#b4b3b3, black);
+        background: linear-gradient(120deg, #667eea 0%, #764ba2 100%);
+      }
+
+      th,
+      td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      }
+      @media (max-width: 768px) {
+        .sidebar {
+          width: 80%;
+          max-width: 300px;
+          transform: translateX(-100%);
+          position: fixed;
+          top: 0;
+          left: 0;
+          height: 100%;
+          transition: transform 0.3s ease;
+          z-index: 1000;
+        }
+        #menu-checkbox:checked ~ .sidebar {
+          transform: translateX(0);
+        }
+        main {
+          width: 100%;
+          padding: 15px;
+        }
+        .topbar {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <input type="checkbox" id="menu-checkbox" />
+    <div class="topinfobar">
+      <p>InfoAlunos - Serviço de Informação dos Alunos</p>
+      <label for="menu-checkbox" class="menu-toggle">☰</label>
+      <div class="topbar__user">
+        <details class="user-menu">
+          <summary class="user-trigger" aria-label="Abrir menu do utilizador">
+            <img
+              class="avatar-img"
+              src="assets/avatar.jpg"
+              alt="Foto de perfil"
+              width="32"
+              height="32"
+            />
+            <span class="user-name">Nome do Aluno</span>
+          </summary>
+          <div class="user-dropdown">
+            <p class="user-course">
+              Tecnologias e Programação de Sistemas de Informação
+            </p>
+            <p class="user-email">diretor.tpsi.tesp@mail.uma.pt</p>
+            <nav class="user-actions">
+              <a href="#" class="dropdown-item">
+                <span class="icon">🔒</span> Alterar Password
+              </a>
+              <a href="#" class="dropdown-item">
+                <span class="icon">📷</span> Alterar Foto
+              </a>
+              <a href="login.html" class="dropdown-item logout">
+                <span class="icon">⏻</span> Sair
+              </a>
+            </nav>
+            <small class="version">InfoAlunos - v3.1.4</small>
+          </div>
+        </details>
+      </div>
+    </div>
+    <aside class="sidebar">
+      <nav aria-label="Navegação principal">
+        <ul class="menu-list">
+          <li><a href="#" class="menu-item">Início</a></li>
+          <li>
+            <details>
+              <summary>Geral</summary>
+              <ul class="submenu">
+                <li><a href="#" class="submenu-item">Processos</a></li>
+                <li><a href="#" class="submenu-item">Dados Pessoais</a></li>
+                <li><a href="#" class="submenu-item">Privacidade</a></li>
+                <li><a href="#" class="submenu-item">Ajuda</a></li>
+              </ul>
+            </details>
+          </li>
+          <li>
+            <details>
+              <summary>Serviços</summary>
+              <ul class="submenusercicos">
+                <li><a href="#" class="submenu-item">Pagamentos</a></li>
+                <li>
+                  <a href="#" class="submenu-item">Matricula/Inscrições</a>
+                </li>
+                <li>
+                  <a href="#" class="submenu-item">Inscrição em Turmas</a>
+                </li>
+                <li><a href="#" class="submenu-item">Requerimentos</a></li>
+                <li>
+                  <a href="#" class="submenu-item">Cartão Universitário</a>
+                </li>
+              </ul>
+            </details>
+          </li>
+          <li>
+            <details>
+              <summary>Concursos</summary>
+              <ul class="submenusercicos">
+                <li><a href="#" class="submenu-item">Candidaturas</a></li>
+              </ul>
+            </details>
+          </li>
+          <li>
+            <details>
+              <summary>Avaliação</summary>
+              <ul class="submenusercicos">
+                <li><a href="#" class="submenu-item">Pautas</a></li>
+                <li><a href="#" class="submenu-item">Reclamação de Nota</a></li>
+                <li><a href="#" class="submenu-item">Inquéritos</a></li>
+                <li>
+                  <a href="#" class="submenu-item">Resultados dos Inquéritos</a>
+                </li>
+                <li><a href="#" class="submenu-item">Inquérito RAIDES</a></li>
+              </ul>
+            </details>
+          </li>
+          <li>
+            <details>
+              <summary>Creditações</summary>
+              <ul class="submenusercicos">
+                <li><a href="#" class="submenu-item">Lista de Processos</a></li>
+                <li><a href="#" class="submenu-item">Novo Processo</a></li>
+              </ul>
+            </details>
+          </li>
+          <li>
+            <details>
+              <summary>Documentos</summary>
+              <ul class="submenusercicos">
+                <li><a href="#" class="submenu-item">Académicos</a></li>
+                <li><a href="#" class="submenu-item">Declarações</a></li>
+              </ul>
+            </details>
+          </li>
+          <li>
+            <details>
+              <summary>Aula</summary>
+              <ul class="submenusercicos">
+                <li><a href="#" class="submenu-item">Calendário</a></li>
+                <li><a href="#" class="submenu-item">Sumários</a></li>
+              </ul>
+            </details>
+          </li>
+          <li>
+            <details>
+              <summary>Disciplina</summary>
+              <ul class="submenusercicos">
+                <li><a href="#" class="submenu-item">Ficha</a></li>
+                <li><a href="#" class="submenu-item">Programa</a></li>
+                <li><a href="#" class="submenu-item">Ficheiros</a></li>
+              </ul>
+            </details>
+          </li>
+          <li>
+            <details>
+              <summary>Curso</summary>
+              <ul class="submenusercicos">
+                <li><a href="#" class="submenu-item">Ficha Curricular</a></li>
+                <li><a href="#" class="submenu-item">Horários</a></li>
+                <li>
+                  <a href="#" class="submenu-item"
+                    >Historico de Matriculas/Inscrições</a
+                  >
+                </li>
+                <li>
+                  <a href="#" class="submenu-item"
+                    >Historico de Disciplinas Aprovadas</a
+                  >
+                </li>
+                <li>
+                  <a href="#" class="submenu-item">Transição para Bolonha</a>
+                </li>
+                <li><a href="#" class="submenu-item">Plano de Conclusão</a></li>
+                <li>
+                  <a href="#" class="submenu-item">Quadro de Prescrição</a>
+                </li>
+                <li>
+                  <a href="#" class="submenu-item"
+                    >Atividades Académicos do Aluno</a
+                  >
+                </li>
+              </ul>
+            </details>
+          </li>
+          <li>
+            <details>
+              <summary>Instituição</summary>
+              <ul class="submenusercicos">
+                <li><a href="#" class="submenu-item">Estrutura Orgânica</a></li>
+              </ul>
+            </details>
+          </li>
+          <li><a href="#" class="menu-item">Eleições</a></li>
+        </ul>
+      </nav>
+    </aside>
+    <main>
+      <section class="dashboard">
+        <h1>Bem-vindo</h1>
+        <p>Consulte os seus dados académicos, documentos e pagamentos.</p>
+      </section>
+
+      <section class="painel">
+        <h2>Pagamentos por Liquidar</h2>
+      </section>
+      <div class="tabela-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Limite</th>
+              <th>Descrição</th>
+              <th>Referencia MB</th>
+              <th>Valor</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>30-09-2025</td>
+              <td>Propina 2025/2026 - 1º Semestre</td>
+              <td>213578249</td>
+              <td>70,00€</td>
+            </tr>
+            <tr>
+              <td>31-10-2025</td>
+              <td>Propina 2025/2026 - 1º Semestre</td>
+              <td>213578249</td>
+              <td>70,00€</td>
+            </tr>
+            <tr>
+              <td>30-11-2025</td>
+              <td>Propina 2025/2026 - 1º Semestre</td>
+              <td>213578249</td>
+              <td>70,00€</td>
+            </tr>
+            <tr>
+              <td>31-12-2025</td>
+              <td>Propina 2025/2026 - 1º Semestre</td>
+              <td>213578249</td>
+              <td>70,00€</td>
+            </tr>
+            <tr>
+              <td>31-01-2026</td>
+              <td>Propina 2025/2026 - 1º Semestre</td>
+              <td>213578249</td>
+              <td>70,00€</td>
+            </tr>
+            <tr>
+              <td>28-02-2026</td>
+              <td>Propina 2025/2026 - 1º Semestre</td>
+              <td>213578249</td>
+              <td>70,00€</td>
+            </tr>
+            <tr>
+              <td>31-03-2026</td>
+              <td>Propina 2025/2026 - 1º Semestre</td>
+              <td>213578249</td>
+              <td>70,00€</td>
+            </tr>
+            <tr>
+              <td>30-04-2026</td>
+              <td>Propina 2025/2026 - 1º Semestre</td>
+              <td>213578249</td>
+              <td>70,00€</td>
+            </tr>
+            <tr>
+              <td>31-05-2026</td>
+              <td>Propina 2025/2026 - 1º Semestre</td>
+              <td>213578249</td>
+              <td>70,00€</td>
+            </tr>
+            <tr>
+              <td>30-06-2026</td>
+              <td>Propina 2025/2026 - 1º Semestre</td>
+              <td>213578249</td>
+              <td>70,00€</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </body>
+</html>

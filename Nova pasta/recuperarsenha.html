@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Projeto Info Alunos (Login)</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 95vh;
+        margin: 0;
+        background-color: #f0f8ff;
+        font-family: "Segoe UI", sans-serif;
+      }
+
+      .loginbox {
+        background-color: lightblue;
+        width: 500px;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease;
+      }
+
+      .loginbox:hover {
+        transform: scale(1.01);
+      }
+
+      h2 {
+        text-align: center;
+        color: #003366;
+      }
+
+      .logouniversidade {
+        display: block;
+        margin: 0 auto 20px auto;
+        width: 120px;
+        height: 120px;
+        border-radius: 10%;
+      }
+
+      label {
+        display: block;
+        margin: 10px auto 5px auto;
+        width: 80%;
+        font-weight: bold;
+        color: #003366;
+      }
+
+      .numero_de_utilizador,
+      .passwordinput {
+        display: block;
+        margin: 0 auto 15px auto;
+        width: 80%;
+        height: 35px;
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        transition: border-color 0.3s ease;
+      }
+      .butao_recuperar {
+        width: 80%;
+        height: 45px;
+        background-color: #0077cc;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        margin: 30px auto 0 auto;
+        display: block;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+      }
+
+      .butao_recuperar:hover {
+        background-color: #005fa3;
+      }
+
+      @media (max-width: 600px) {
+        .loginbox {
+          width: 90%;
+          padding: 20px;
+        }
+
+        .logouniversidade {
+          width: 100px;
+          height: 100px;
+        }
+
+        .butao_recuperar {
+          font-size: 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="loginbox">
+      <form action="login_infoalunos.html" method="post">
+        <img
+          src="https://img.freepik.com/vetores-premium/logo-do-predio_555601-333.jpg"
+          alt="Logo da Universidade"
+          class="logouniversidade"
+        />
+        <h2>Projeto Infoalunos</h2>
+
+        <label for="numero_de_utilizador">Número de aluno:</label>
+        <input
+          type="number"
+          name="numero_de_utilizador"
+          id="numero_de_utilizador"
+          class="numero_de_utilizador"
+          placeholder="Número de aluno"
+          required
+        />
+
+        <label for="text">Email oficial:</label>
+        <input
+          type="text"
+          name="Email_oficial"
+          class="passwordinput"
+          placeholder="Intruduza o seu email oficial"
+          required
+          minlength="6"
+        />
+        <div class="submitbutao">
+          <a href="./login_infoalunos.html" class="link_menuinicial">
+            <button type="submit" class="butao_recuperar">
+              Recuperar Password
+            </button>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>
