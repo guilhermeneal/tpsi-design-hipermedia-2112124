@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <title>Painel Académico</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --primary: #005fa3;
+      --secondary: #004a80;
+      --bg-light: #f4f6f9;
+      --text-light: #333b3c;
+    }
+
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background-color: var(--bg-light);
+      color: var(--text-light);
+      min-height: 100vh;
+      padding-top: 50px;
+    }
+
+    /* Barra superior */
+    .topinfobar {
+      width: 100%;
+      background-color: var(--primary);
+      color: white;
+      padding: 16px 20px;
+      font-weight: bold;
+      font-size: 15px;
+      position: fixed; top: 0; left: 0; z-index: 1000;
+      display: flex; justify-content: center; align-items: center;
+    }
+
+    /* Menu do utilizador */
+    .topbar__user { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); }
+    .user-menu { position: relative; display: inline-block; }
+    .user-trigger {
+      display: flex; align-items: center; cursor: pointer; padding: 8px;
+      color: white; border-radius: 6px; transition: background 0.3s ease; list-style: none;
+    }
+    .user-trigger:hover { background: #003a66; }
+    .user-menu > summary::-webkit-details-marker { display: none; }
+    .avatar-img { border-radius: 50%; width: 32px; height: 32px; margin-right: 8px; }
+
+    /* Dropdown */
+    .user-dropdown {
+      position: absolute; top: calc(100% + 8px); right: 0;
+      background: #ffffff; color: #333; padding: 15px; border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2); min-width: 240px; z-index: 2000;
+      display: none;
+    }
+    .user-menu[open] .user-dropdown { display: block; }
+
+    .user-course, .user-email { margin-bottom: 10px; font-size: 14px; }
+
+    .user-actions { display: flex; flex-direction: column; gap: 8px; }
+    .dropdown-item {
+      display: flex; align-items: center; gap: 8px;
+      color: #333; text-decoration: none; padding: 8px; border-radius: 4px;
+      transition: background 0.3s ease;
+    }
+    .dropdown-item:hover { background: rgba(0,0,0,0.05); }
+    .icon { font-size: 18px; width: 20px; text-align: center; }
+    .logout { color: #c00; }
+    .version { display: block; margin-top: 10px; font-size: 12px; opacity: 0.7; }
+
+    /* Conteúdo principal */
+    main { padding: 20px; width: 100%; }
+    .painel {
+      background-color: white; padding: 20px; border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1); margin-bottom: 20px;
+    }
+    .painel h2 { margin-bottom: 15px; color: var(--primary); }
+
+    .student-form { display: flex; flex-direction: column; gap: 12px; }
+    .student-form label { font-weight: bold; color: #333; }
+    .student-form input, .student-form textarea {
+      padding: 8px; border: 1px solid #ccc; border-radius: 4px;
+    }
+
+    /* Botões de ação do formulário */
+    .form-buttons { display: flex; gap: 10px; margin-top: 8px; }
+    .btn { padding: 10px 16px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; }
+    .btn-alterar { background: var(--primary); color: #fff; }
+    .btn-alterar:hover { background: var(--secondary); }
+    .btn-adicionar { background: #4caf50; color: #fff; }
+    .btn-adicionar:hover { background: #3d8b40; }
+  </style>
+</head>
+<body>
+  <!-- Barra superior -->
+  <div class="topinfobar">
+    Unidade de Assuntos Académicos
+    <div class="topbar__user">
+      <details class="user-menu">
+        <summary class="user-trigger">
+          <img src="avatar.png" alt="Avatar" class="avatar-img">
+          <span>Aluno</span>
+        </summary>
+        <!-- Dropdown -->
+        <div class="user-dropdown">
+          <p class="user-course">Tecnologias e Programação de Sistemas de Informação</p>
+          <p class="user-email">diretor.tpsi.tesp@mail.uma.pt</p>
+          <nav class="user-actions">
+            <a href="#" class="dropdown-item">
+              <span class="icon">🔒</span> <span>Alterar Password</span>
+            </a>
+            <a href="#" class="dropdown-item">
+              <span class="icon">📷</span> <span>Alterar Foto</span>
+            </a>
+            <a href="login.html" class="dropdown-item logout">
+              <span class="icon">🚪</span> <span>Sair</span>
+            </a>
+          </nav>
+          <small class="version">InfoAlunos - v3.1.4</small>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <!-- Conteúdo principal -->
+  <main>
+    <div class="painel">
+      <h2>Alterar / Preencher Dados do Aluno</h2>
+      <form class="student-form">
+        <label>Nome Completo</label>
+        <input type="text" name="nome" required>
+
+        <label>Nº de Estudante</label>
+        <input type="text" name="matricula" required>
+
+        <label>Curso</label>
+        <input type="text" name="curso">
+
+        <label>Email</label>
+        <input type="email" name="email">
+
+        <label>Telefone</label>
+        <input type="tel" name="telefone">
+
+        <label>Morada</label>
+        <textarea name="morada"></textarea>
+
+        <div class="form-buttons">
+          <button type="submit" class="btn btn-alterar">Alterar</button>
+          <button type="button" class="btn btn-adicionar">Adicionar</button>
+        </div>
+      </form>
+    </div>
+  </main>
+</body>
+</html>
